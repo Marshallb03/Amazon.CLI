@@ -26,9 +26,9 @@ namespace Amazon.Library.Services
             }
         }
 
-        private ShoppingCartService()
-        {
-        }
+        //private ShoppingCartService()
+        //{
+        //}
 
         public static ShoppingCartService Current
         {
@@ -46,10 +46,10 @@ namespace Amazon.Library.Services
             }
         }
 
-        public ShoppingCart AddOrUpdate(ShoppingCart c)
-        {
-
-        }
+        //public ShoppingCart AddOrUpdate(ShoppingCart c)
+        //{
+        //
+        //}
 
 
         public void AddProductToCart(Product product)
@@ -67,11 +67,11 @@ namespace Amazon.Library.Services
             {
                 return;
             }
-            inventoryProduct.qty -= product.qty;    
+            inventoryProduct.Quantity -= product.Quantity;    
             if(existingProduct != null)
             {
                 // update
-                existingProduct.qty += product.qty;
+                existingProduct.Quantity += product.Quantity;
             } else
             {
                 // add

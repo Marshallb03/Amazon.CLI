@@ -20,6 +20,10 @@
         Title="Home"
         ContentTemplate="{DataTemplate views:ShopView}"
         Route="Shop" />
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate views:ProductView}"
+        Route="Product" />
 
 
 </Shell>
