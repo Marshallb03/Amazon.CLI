@@ -1,14 +1,22 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Amazon.Library.Models
 {
-    internal class ShoppingCart
+    public class ShoppingCart
     {
         int Id { get; set; }
         public List<Product>? Contents { get; set; }
+
+        public ShoppingCart()
+        {
+            Contents = new List<Product>();
+        }
     }
+
 }

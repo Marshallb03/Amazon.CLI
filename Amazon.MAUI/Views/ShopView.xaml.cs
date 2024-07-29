@@ -1,4 +1,5 @@
 using Amazon.MAUI.ViewModels;
+using System;
 
 namespace Amazon.MAUI.Views;
 
@@ -24,6 +25,13 @@ public partial class ShopView : ContentPage
     {
         (BindingContext as ShopViewModel).Search();
     }
+
+    private void InCartClicked(object sender, EventArgs e)
+    {
+        (BindingContext as ShopViewModel).PlaceInCart();
+
+    }
+
 }
 
 

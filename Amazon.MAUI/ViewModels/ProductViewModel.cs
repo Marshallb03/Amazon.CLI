@@ -63,11 +63,18 @@ namespace Amazon.MAUI.ViewModels
                 InventoryServiceProxy.Current.AddOrUpdateProduct(Model);
             }
         }
-        
-            
-        
+        public string DisplayPrice
+        {
+            get
+            {
+                if (Model == null) { return string.Empty; }
+                return $"{Model.Price:C}";
+            }
+        }
 
-   
+
+
+
 
     }
 }
