@@ -19,6 +19,11 @@ public partial class ShopView : ContentPage
     {
         (BindingContext as ShopViewModel).Refresh();
     }
+
+    private void SearchClicked(object sender, EventArgs e)
+    {
+        (BindingContext as ShopViewModel).Search();
+    }
 }
 
 

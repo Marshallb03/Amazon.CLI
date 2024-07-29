@@ -13,14 +13,25 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
-                    </Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition/>
+                </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ListView
+                <Grid Grid.Row="0"
+                      Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" Text="{Binding InventoryQuery}"/>
+                    <Button Grid.Column="1" Text="Search" Clicked="SearchClicked"/>  
+                </Grid>
+                <ListView
                     ItemsSource="{Binding Products}"
                     Grid.Column="0"
-                    Grid.Row="0"
+                    Grid.Row="1"
                     >
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -34,7 +45,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Label Grid.Column="0" Text="{Binding Model.Id}"/>
-                                        <Label Grid.Column="1" Text="{Binding DisplayPrice}"/>
+                                        <Label Grid.Column="1" Text="{Binding Model.Price}"/>
                                         <Label Grid.Column="2" Text="{Binding Model.Name}"/>
                                         <Label Grid.Column="3" Text="{Binding Model.Quantity}"/>
                                     </Grid>
