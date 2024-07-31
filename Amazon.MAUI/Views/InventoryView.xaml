@@ -3,16 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Amazon.MAUI.Views.InventoryView"
              NavigatedTo="ContentPage_NavigatedTo"
+             NavigatedFrom="ContentPage_NavigatedFrom"
              Title="InventoryView">
-    
-
-
-
     <VerticalStackLayout>
         <Label Text="Inventory" FontSize="Title" />
-        <Label Text="Manage your inventory here" FontSize="Body" />
+        <Label Text="Manage your inventory" FontSize="Body" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Entry Grid.Column="0" Text="{Binding Query}"/>
+                <Button Grid.Column="1" Text="Search" Clicked="SearchClicked"/>
+            </Grid>
+        </Grid>
         <ListView
             ItemsSource="{Binding Products}"
+            SelectedItem="{Binding SelectedProduct}"
             >
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -34,6 +47,14 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Button
+            Text="Edit"
+            Clicked="EditClicked"
+            />
+        <Button
+            Text="Delete"
+            Clicked="DeleteClicked"
+            />
         <Button 
             Text="Add Product"
             Clicked="AddProduct" />

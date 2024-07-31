@@ -31,6 +31,10 @@ public partial class ShopView : ContentPage
         (BindingContext as ShopViewModel).PlaceInCart();
 
     }
+    private void AddCartClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//Cart");
+    }
 
 }
 

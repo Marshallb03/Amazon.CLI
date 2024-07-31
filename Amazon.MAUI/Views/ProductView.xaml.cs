@@ -1,10 +1,17 @@
 using Amazon.MAUI.ViewModels;
 
 namespace Amazon.MAUI.Views;
+[QueryProperty(nameof(ProductId), "productId")]
+
+
+
 
 public partial class ProductView : ContentPage
 {
-	public ProductView()
+
+    public int ProductId { get; set; }
+
+    public ProductView()
 	{
 		InitializeComponent();
 	}
@@ -22,9 +29,10 @@ public partial class ProductView : ContentPage
 
     }
 
+
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
-        BindingContext = new ProductViewModel();
+        BindingContext = new ProductViewModel(ProductId);
 
     }
 }

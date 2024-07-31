@@ -22,4 +22,24 @@ public partial class InventoryView : ContentPage
     {
         (BindingContext as InventoryViewModel)?.Refresh();
     }
+
+    private void EditClicked(object sender, EventArgs e)
+    {
+        (BindingContext as InventoryViewModel)?.Edit();
+    }
+
+    private void DeleteClicked(object sender, EventArgs e)
+    {
+        (BindingContext as InventoryViewModel)?.DeleteProduct();
+    }
+
+    private void SearchClicked(object sender, EventArgs e)
+    {
+        (BindingContext as InventoryViewModel)?.SearchProduct();
+    }
+
+    private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
+    {
+
+    }
 }

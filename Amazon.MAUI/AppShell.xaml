@@ -17,13 +17,17 @@
         ContentTemplate="{DataTemplate views:InventoryView}"
         Route="Inventory" />
     <ShellContent
-        Title="Home"
+        Title="Shop"
         ContentTemplate="{DataTemplate views:ShopView}"
         Route="Shop" />
     <ShellContent
-        Title="Home"
+        Title="Product"
         ContentTemplate="{DataTemplate views:ProductView}"
         Route="Product" />
+    <ShellContent
+        Title="New Cart"
+        ContentTemplate="{DataTemplate views:CartView}"
+        Route="Cart" />
 
 
 </Shell>

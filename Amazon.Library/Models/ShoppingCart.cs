@@ -1,22 +1,26 @@
-﻿using Microsoft.VisualBasic;
+﻿using Amazon.Library.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Amazon.Library.Models
 {
     public class ShoppingCart
     {
-        int Id { get; set; }
-        public List<Product>? Contents { get; set; }
+        public int Id { get; set; }
+        public List<ProductDTO>? Contents { get; set; }
+        public string Name { get; set; }
 
         public ShoppingCart()
         {
-            Contents = new List<Product>();
+            Contents = new List<ProductDTO>();
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
-
 }

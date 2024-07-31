@@ -21,6 +21,7 @@
                     <RowDefinition Height="10*"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                <!--Search Box-->
                 <Grid Grid.Row="0"
                       Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -64,14 +65,16 @@
                             <ColumnDefinition Width="5*"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Picker Grid.Column="0"                       
+                        <Picker Grid.Column="0"
+                        ItemsSource="{Binding Carts}"
+                        SelectedItem="{Binding SelectedCart}"
                         />
                         <Button Grid.Column="1"
                             Text="+"
-                            Clicked="SearchClicked"/>
+                            Clicked="AddCartClicked"/>
                     </Grid>
                     <ListView
-                    ItemsSource="{Binding ProductInCart}"
+                    ItemsSource="{Binding ProductsInCart}"
                     >
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -99,19 +102,24 @@
                 <Label Text=""/>
             </Grid>
             <Grid
+  
                 Grid.Row="2"
                 Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
+                <Label Grid.Row="0" Text="Total"/>
+                <Label Grid.Row="1" Text="{Binding Total}"/>
                 <Button
-                    Grid.Row="0"
+                    Grid.Row="2"
                     Text="Place in Cart"
                     Clicked="InCartClicked"
                     />
                 <Button
-                    Grid.Row="1"
+                    Grid.Row="3"
                     Text="Cancel"
                     Clicked="CancelClicked"
                     />

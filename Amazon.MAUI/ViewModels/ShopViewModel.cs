@@ -8,6 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Amazon.Library.Models;
+using System.Collections.ObjectModel;
+using Amazon.Library.DTO;
 
 
 namespace Amazon.MAUI.ViewModels
@@ -34,8 +36,9 @@ namespace Amazon.MAUI.ViewModels
         {
             get
             {
-                return InventoryServiceProxy.Current.Products.Where(p => p != null).
-                    Where(p => p?.Name?.ToUpper()?.Contains(InventoryQuery.ToUpper()) ?? false).Select(p => new ProductViewModel(p)).ToList() ?? new List<ProductViewModel>();
+                return InventoryServiceProxy.Current.Products?.Where(p => p != null).
+                    Where(p => p?.Name?.ToUpper()?.Contains(InventoryQuery.ToUpper()) ?? false)
+                    .Select(p => new ProductViewModel(p)).ToList() ?? new List<ProductViewModel>();
             }
         }
         private ProductViewModel? productToBuy;
@@ -51,11 +54,11 @@ namespace Amazon.MAUI.ViewModels
 
                 if (productToBuy != null && productToBuy.Model == null)
                 {
-                    productToBuy.Model = new Product();
+                    productToBuy.Model = new ProductDTO();
                 }
                 else if (productToBuy != null && productToBuy.Model != null)
                 {
-                    productToBuy.Model = new Product(productToBuy.Model);
+                    productToBuy.Model = new ProductDTO(productToBuy.Model);
                 }
 
                 NotifyPropertyChanged();
@@ -63,21 +66,71 @@ namespace Amazon.MAUI.ViewModels
             }
         }
 
-        public ShoppingCart Cart {
-            get
-            {
-                return ShoppingCartServiceProxy.Current.Cart;
-            }
-        }
+        private ShoppingCart? selectedCart;
 
-        public List<ProductViewModel> ProductInCart
+        public ShoppingCart? SelectedCart
         {
             get
             {
-                return ShoppingCartServiceProxy.Current?.Cart?.Contents?.Where(p => p != null).
-                    Select(p => new ProductViewModel(p)).ToList() ?? new List<ProductViewModel>();
+                return selectedCart;
+            }
+
+            set
+            {
+                selectedCart = value;
+                NotifyPropertyChanged(nameof(ProductsInCart));
             }
         }
+
+        public ObservableCollection<ShoppingCart> Carts
+        {
+            get
+            {
+                return new ObservableCollection<ShoppingCart>(ShoppingCartServiceProxy.Current.Carts);
+            }
+        }
+
+        public List<ProductViewModel> ProductsInCart
+        {
+            get
+            {
+                return SelectedCart?.Contents?.Where(p => p != null)
+                    .Where(p => p?.Name?.ToUpper()?.Contains(InventoryQuery.ToUpper()) ?? false)
+                    .Select(p => new ProductViewModel(p)).ToList()
+                    ?? new List<ProductViewModel>();
+            }
+        }
+
+        private decimal total;
+
+        public decimal Total
+        {
+            get => total;
+            set
+            {
+                if (total != value)
+                {
+                    total = value;
+                    NotifyPropertyChanged();
+                    NotifyPropertyChanged(nameof(TotalDisplay));
+                }
+            }
+        }
+
+        public string TotalDisplay
+        {
+            get
+            {
+                return $"{Total:C}";
+            }
+            
+        }
+
+        private void CalculateTotal()
+        {
+            //Total = ShoppingCartServiceProxy.Current.CalculateTotal();
+        }
+
 
         public void Search()
         {
@@ -93,25 +146,38 @@ namespace Amazon.MAUI.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+
+
         public void PlaceInCart()
         {
             if ( ProductToBuy?.Model == null)
             {
                 return;
             }
+            if (ProductToBuy?.Model == null)
+            {
+                return;
+            }
             //ProductToBuy.Model = new Product(ProductToBuy.Model);
             ProductToBuy.Model.Quantity = 1;
-            ShoppingCartServiceProxy.Current.AddProductToCart(ProductToBuy.Model);
+            ShoppingCartServiceProxy.Current.AddProductToCart(ProductToBuy.Model, SelectedCart.Id);
 
             ProductToBuy = null;
-            NotifyPropertyChanged(nameof(ProductInCart));
+            NotifyPropertyChanged(nameof(ProductsInCart));
             NotifyPropertyChanged(nameof(Products));
 
+
+            CalculateTotal();
+
+
         }
+
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+       
 
 
     }

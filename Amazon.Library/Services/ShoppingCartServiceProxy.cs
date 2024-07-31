@@ -1,4 +1,5 @@
-﻿using Amazon.Library.Models;
+﻿using Amazon.Library.DTO;
+using Amazon.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,11 +14,11 @@ namespace Amazon.Library.Services
         private static ShoppingCartServiceProxy? instance;
         private static object instanceLock = new object();
         private List<ShoppingCart> carts;
-        public ReadOnlyCollection<ShoppingCart> Carts
+        public List<ShoppingCart> Carts
         {
             get
             {
-                return carts.AsReadOnly();
+                return carts;
             }
         }
 
@@ -33,6 +34,18 @@ namespace Amazon.Library.Services
                 }
                 return carts?.FirstOrDefault() ?? new ShoppingCart();
             }
+        }
+
+        public ShoppingCart AddCart(ShoppingCart cart)
+        {
+            if (cart.Id == 0)
+            {
+                cart.Id = carts.Select(c => c.Id).Max() + 1;
+            }
+
+            carts.Add(cart);
+
+            return cart;
         }
 
         private ShoppingCartServiceProxy()
@@ -62,30 +75,46 @@ namespace Amazon.Library.Services
         //}
 
 
-        public void AddProductToCart(Product Newproduct)
+        public void AddProductToCart(ProductDTO newProduct, int id)
+        {
+            var cartToUse = Carts.FirstOrDefault(c => c.Id == id);
+            if (cartToUse == null || cartToUse.Contents == null)
+            {
+                return;
+            }
+
+            var existingProduct = cartToUse?.Contents?
+                .FirstOrDefault(existingProducts => existingProducts.Id == newProduct.Id);
+
+            var inventoryProduct = InventoryServiceProxy.Current.Products.FirstOrDefault(invProd => invProd.Id == newProduct.Id);
+            if (inventoryProduct == null)
+            {
+                return;
+            }
+
+            inventoryProduct.Quantity -= newProduct.Quantity;
+
+            if (existingProduct != null)
+            {
+                // update
+                existingProduct.Quantity += newProduct.Quantity;
+            }
+            else
+            {
+                //add
+                cartToUse?.Contents?.Add(newProduct);
+            }
+
+        }
+
+        public void CalculateTotal()
         {
             if(Cart == null || Cart.Contents == null)
             {
                 return;
             }
 
-            var existingProduct = Cart.Contents?.FirstOrDefault(existingProduct => existingProduct.Id == Newproduct.Id);
-
-
-            var inventoryProduct = InventoryServiceProxy.Current.Products.FirstOrDefault(p => p.Id == Newproduct.Id);
-            if(inventoryProduct == null)
-            {
-                return;
-            }
-            inventoryProduct.Quantity -= Newproduct.Quantity;    
-            if(existingProduct != null)
-            {
-                existingProduct.Quantity += Newproduct.Quantity;
-            } else
-            {
-                Cart?.Contents?.Add(Newproduct);
-            }
-
+            var Total = Cart.Contents.Sum(p => p.Price * p.Quantity);
         }
     }
 }

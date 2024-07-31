@@ -1,4 +1,5 @@
-﻿using Amazon.Library.Models;
+﻿using Amazon.Library.DTO;
+using Amazon.Library.Models;
 using Amazon.Library.Services;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,9 @@ namespace Amazon.MAUI.ViewModels
 {
     public class InventoryViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public string? Query { get; set; }
         public List<ProductViewModel> Products
         {
             get
@@ -24,12 +28,37 @@ namespace Amazon.MAUI.ViewModels
 
         }
 
-        public void Refresh()
+        public ProductViewModel SelectedProduct { get; set; }
+
+        public InventoryViewModel()
         {
+        }
+
+
+
+        public async void Refresh()
+        {
+            await InventoryServiceProxy.Current.Get();
             NotifyPropertyChanged("Products");
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public void Edit()
+        {
+            Shell.Current.GoToAsync($"//Product?productId={SelectedProduct?.Model?.Id ?? 0}");
+        }
+
+        public async void DeleteProduct()
+        {
+            await InventoryServiceProxy.Current.Delete(SelectedProduct?.Model?.Id ?? 0);
+            Refresh();
+        }
+
+        public async void SearchProduct()
+        {
+            await InventoryServiceProxy.Current.Search(new Query(Query));
+            NotifyPropertyChanged("Products");
+
+        }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {

@@ -1,15 +1,43 @@
-﻿using Amazon.Library.Models;
+﻿using Amazon.Library.DTO;
+using Amazon.Library.Models;
 using Amazon.Library.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Amazon.MAUI.ViewModels
 {
     public class ProductViewModel
     {
+
+        public ICommand? EditCommand { get; private set; }
+        public ICommand? DeleteCommand { get; private set; }
+
+        // public Product? Product;
+        public ProductDTO? Model { get; set; }
+
+
+        private void ExecuteEdit(ProductViewModel? p)
+        {
+            if (p?.Model == null)
+            {
+                return;
+            }
+            Shell.Current.GoToAsync($"//Product?productId={p.Model.Id}");
+        }
+
+        private void ExecuteDelete(int? id)
+        {
+            if (id == null)
+            {
+                return;
+            }
+
+            InventoryServiceProxy.Current.Delete(id ?? 0);
+        }
 
         public override string ToString()
         {
@@ -19,14 +47,21 @@ namespace Amazon.MAUI.ViewModels
             }
             return $"{Model.Id} - {Model.Name} - {Model.Price} ";
         }
-        public Product? Model { get; set; }
-
-        public ProductViewModel()
+        public ProductViewModel(int productId = 0)
         {
-            Model = new Product();
+            if (productId > 0)
+            {
+                Model = new ProductDTO();
+            }
+            else
+            {
+               Model = InventoryServiceProxy.Current.Products
+                    .FirstOrDefault(p => p.Id == productId) ?? new ProductDTO();
+            }
+            
         }   
 
-        public ProductViewModel(Product model)
+        public ProductViewModel(ProductDTO model)
         {
             if (model != null)
             {
@@ -34,7 +69,7 @@ namespace Amazon.MAUI.ViewModels
             }
             else
             {
-                Model = new Product();
+                Model = new ProductDTO();
             }
         }
 
@@ -56,11 +91,11 @@ namespace Amazon.MAUI.ViewModels
             }
         }
 
-        public void Add()
+        public async void Add()
         {
             if (Model != null)
             {
-                InventoryServiceProxy.Current.AddOrUpdateProduct(Model);
+                 Model = await InventoryServiceProxy.Current.AddOrUpdateProduct(Model);
             }
         }
         public string DisplayPrice
