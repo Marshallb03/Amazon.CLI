@@ -105,15 +105,15 @@ namespace Amazon.MAUI.ViewModels
 
         public decimal Total
         {
-            get => total;
+            get
+            {
+                return total;
+            }
+
             set
             {
-                if (total != value)
-                {
-                    total = value;
-                    NotifyPropertyChanged();
-                    NotifyPropertyChanged(nameof(TotalDisplay));
-                }
+                total = value;
+                NotifyPropertyChanged(nameof(TotalDisplay));
             }
         }
 

@@ -22,19 +22,19 @@ namespace Amazon.Library.Services
             }
         }
 
-        public ShoppingCart Cart
-        {
-            get
-            {
-                if (!carts.Any())
-                {
-                    var newCart = new ShoppingCart();
-                    carts.Add(newCart);
-                    return newCart;
-                }
-                return carts?.FirstOrDefault() ?? new ShoppingCart();
-            }
-        }
+        //public ShoppingCart Cart
+        //{
+        //    get
+        //    {
+        //        if (!carts.Any())
+        //        {
+        //            var newCart = new ShoppingCart();
+        //            carts.Add(newCart);
+        //            return newCart;
+        //        }
+        //        return carts?.FirstOrDefault() ?? new ShoppingCart();
+        //    }
+        //}
 
         public ShoppingCart AddCart(ShoppingCart cart)
         {
@@ -107,14 +107,14 @@ namespace Amazon.Library.Services
 
         }
 
-        public void CalculateTotal()
-        {
-            if(Cart == null || Cart.Contents == null)
-            {
-                return;
-            }
+        //public void CalculateTotal()
+        //{
+        //    if(Cart == null || Cart.Contents == null)
+        //    {
+        //        return;
+        //    }
 
-            var Total = Cart.Contents.Sum(p => p.Price * p.Quantity);
-        }
+        //    var Total = Cart.Contents.Sum(p => p.Price * p.Quantity);
+        //}
     }
 }

@@ -29,7 +29,6 @@ public partial class ProductView : ContentPage
 
     }
 
-
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
         BindingContext = new ProductViewModel(ProductId);

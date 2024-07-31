@@ -5,8 +5,9 @@
              Title="CartView">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            Text="Name:" />
+        <Entry Text="{Binding Name}"/>
+        <Button Clicked="OkClicked" Text="Ok"/>
+        <Button Clicked="CancelClicked" Text="Cancel"/>
     </VerticalStackLayout>
 </ContentPage>

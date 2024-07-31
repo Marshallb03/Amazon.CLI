@@ -44,7 +44,7 @@ namespace Amazon.MAUI.ViewModels
 
         public void Edit()
         {
-            Shell.Current.GoToAsync($"//Product?productId={SelectedProduct?.Model?.Id ?? 0}");
+            Shell.Current.GoToAsync($"//Product?productId={SelectedProduct?.Model?.Id }");
         }
 
         public async void DeleteProduct()
